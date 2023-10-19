@@ -1,0 +1,90 @@
+@page
+@using PSL.Extensions
+@using PSL.Contracts
+@model DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.DiscordId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.DiscordId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Username)
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            <div class="d-flex flex-row gap-2">
+                @Html.DisplayFor(model => model.Entry.State) since @Html.DisplayFor(model => model.Entry.CreatedAt)
+            </div>
+        </dd>
+    </dl>
+    <h4>Online Times</h4>
+    <em>The State timetable gets cached for 5 minutes and therefore will not always be up to date</em>
+    <hr />
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>State</th>
+            <th>Duration since @Html.DisplayFor(model => model.Date)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Online</td>
+            <td>@Model.OnlineTimes[EState.Online].PrettyPrint()</td>
+        </tr>
+        <tr>
+            <td>Idle</td>
+            <td>@Model.OnlineTimes[EState.Idle].PrettyPrint()</td>
+        </tr>
+        <tr>
+            <td>Offline</td>
+            <td>@Model.OnlineTimes[EState.Offline].PrettyPrint()</td>
+        </tr>
+        <tr>
+            <td>Do not disturb</td>
+            <td>@Model.OnlineTimes[EState.DoNotDisturb].PrettyPrint()</td>
+        </tr>
+        </tbody>
+    </table>
+    <p>
+        <a asp-page="./Details" asp-route-id="@Model.User.Id" asp-route-offset="@TimeSpan.FromDays(1)">Last Day</a> |
+        <a asp-page="./Details" asp-route-id="@Model.User.Id" asp-route-offset="@TimeSpan.FromDays(7)">Last Week</a> |
+        <a asp-page="./Details" asp-route-id="@Model.User.Id" asp-route-offset="@TimeSpan.FromDays(30)">Last Month</a>
+    </p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>State</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach(var entry in Model.Entries)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => entry.CreatedAt)</td>
+                <td>@Html.DisplayFor(model => entry.State)</td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,38 @@
+@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users of all discord servers</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Username)
+            </th>
+            <th>@Html.DisplayNameFor(model => model.Entries[Model.User[0].Id].State)</th>
+            <th>Last State Change</th>
+            <th>Detail Pages</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.User)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>@Html.DisplayFor(model => model.Entries[item.Id].State)</td>
+            <td>@Html.DisplayFor(model => model.Entries[item.Id].CreatedAt)</td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id" asp-route-offset="@TimeSpan.FromDays(1)">Details (24 hours)</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id" asp-route-offset="@TimeSpan.FromDays(7)">Details (7 days)</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id" asp-route-offset="@TimeSpan.FromDays(30)">Details (30 days)</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

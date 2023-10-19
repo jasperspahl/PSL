@@ -1,0 +1,20 @@
+@using PSL.Contracts
+@model PSL.Data.Presence.State
+
+@switch((EState)Model.Id)
+{
+    case EState.Online:
+        <div class="text-success">Online</div>
+        break;
+    case EState.Idle:
+        <div class="text-warning">Idle</div>
+        break;
+    case EState.Offline:
+        <div class="text-secondary">Offline</div>
+        break;
+    case EState.DoNotDisturb:
+        <div class="text-danger">Do not disturb</div>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
